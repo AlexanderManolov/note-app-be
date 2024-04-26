@@ -1,15 +1,14 @@
-import { Request, Response } from 'express-serve-static-core'
 import express from 'express'
 import { configDotenv } from 'dotenv'
+import MainRouter from './src/api/v1/routes'
 
-// configures dotenv to work in your application
 configDotenv()
 const PORT = process.env.PORT ?? '5050'
 const app = express()
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 
-app.get('/', (request: Request, response: Response) => {
-	response.status(200).send('Hello World')
-})
+app.use('/api/v1', MainRouter)
 
 app
 	.listen(PORT, () => {
