@@ -1,3 +1,3 @@
 #!/bin/sh
-# npx prisma migrate dev
-nodemon src/index.ts
+npx prisma migrate dev
+nodemon index.ts

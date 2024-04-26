@@ -4,7 +4,11 @@
   "description": "Take your notes with ease.",
   "main": "index.js",
   "scripts": {
-    "start": "sh bin/startup.sh",
+    "start": "docker compose up",
+    "down": "docker-compose down && docker-compose rm --force --stop web db pgadmin",
+    "db:console": "docker-compose run db psql -h localhost -U postgres -d postgres",
+    "db:migrate": "docker-compose run web npx prisma migrate dev --preview-feature",
+    "db:seed": "docker compose run web npx ts-node src/db/Postgres/seed.ts",
     "format": "prettier --config .prettierrc.json --write src/**/*.ts"
   },
   "author": "Alexander Manolov",
@@ -13,7 +17,12 @@
     "url": "https://github.com/AlexanderManolov/note-app-be/issues"
   },
   "homepage": "https://github.com/AlexanderManolov/note-app-be#readme",
+  "engines": {
+    "node": "18.20.2",
+    "npm": "10.5.0"
+  },
   "dependencies": {
+    "@prisma/client": "^5.13.0",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "ts-node": "^10.9.2"
@@ -32,6 +41,7 @@
     "globals": "^15.0.0",
     "nodemon": "^3.1.0",
     "prettier": "^3.2.5",
+    "prisma": "^5.13.0",
     "typescript": "^5.4.5"
   }
 }
