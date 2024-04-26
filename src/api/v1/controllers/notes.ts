@@ -36,7 +36,9 @@ export const getNote = async (req: Request, res: Response) => {
 export const createNote = async (req: Request, res: Response) => {
 	const payload = validateMultiplePayload(req.body)
 	if (payload.length === 0) {
-		res.status(400).json({ success: false, errorMessage: 'Invalid payload. Please, provide an array of notes.' })
+		res
+			.status(400)
+			.json({ success: false, errorMessage: 'Invalid payload. Please, provide an array of notes.' })
 		return
 	}
 
@@ -90,6 +92,10 @@ export const updateNote = async (req: Request, res: Response) => {
 
 export const deleteNote = async (req: Request, res: Response) => {
 	const id = Number(req.params.id)
-	await db.notes.delete({ where: { id } })
-	res.status(200).json({ success: true })
+	try {
+		await db.notes.delete({ where: { id } })
+		res.status(200).json({ success: true })
+	} catch (error) {
+		res.status(404).json({ success: false, errorMessage: 'Not found.' })
+	}
 }
